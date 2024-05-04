@@ -1,26 +1,36 @@
 def main():
-    with open("books/frankenstein.txt") as f:
-        file_contents=f.read()
-    print(file_contents)
-    print(wordcounter())
-    counts=lettercounter()
-    sort_report(counts)
+   book_path = "books/frankenstein.txt"
+   book_text=bookopener(book_path)
+   num_of_words=wordcounter(book_text)
+   counts=lettercounter(book_text)
+   print(f"===Beginning {book_path} report===")
+   print()
+   print(bookopener(book_path))
+   print()
+   print(f"{num_of_words} words found in book")
+   print()
+   sort_report(counts)
 
-def wordcounter():
-    with open("books/frankenstein.txt") as f:
+#function to open and read the entire book
+def bookopener(path):
+     with open(path) as f:
         file_contents=f.read()
-        words= file_contents.split()
+        return file_contents
+
+#function to count the amount of words in the book
+def wordcounter(book_text):
+    words= book_text.split()
     return len(words)
 
-def lettercounter():
+#function to count the amount of each letter
+def lettercounter(book_text):
         letter_count ={}
-        with open("books/frankenstein.txt") as f:
-            file_contents=f.read()
-        for letter in file_contents:
+        for letter in book_text:
             current_count = letter_count.get(letter.lower(),0)
             letter_count[letter.lower()]= current_count +1
         return letter_count
 
+#function to give a report on how many times each letter shows up
 def sort_report(letter_count):
     letter_list= [{"letter":letter, "count":count} for letter, count in letter_count.items() if letter.isalpha()]
     letter_list.sort(key=lambda x: x['count'], reverse=True)
